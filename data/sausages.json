@@ -1,0 +1,23 @@
+[
+    {
+      "id": 1,
+      "name": "Bratwurst",
+      "Country of origin": "Germany",
+      "description": "A sausage made from pork, beef, or veal."
+    },
+    {
+      "id": 2,
+      "name": "Chorizo",
+      "Country of origin": "Spain",
+      "description": "A spicy sausage made from pork."
+    }, 
+    {
+        "id": 3,
+        "name": "Andouille",
+        "Country of origin": "USA",
+        "description": "A spicy sausage made from pork."
+    }
+    
+  ]
+  
+  
