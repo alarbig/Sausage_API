@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS Sausage_db;
+CREATE DATABASE Sausage_db;
