@@ -1,6 +1,24 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const Sausage  = require('../../model/Sausage')
+
+// authentication middleware setup
+
+function authToken (req, res, next){
+  const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
+
+        if (token == null) return res.sendStatus(401);
+
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user ) => {
+            if (err) 
+            return res.sendStatus(403);
+            req.user = user;
+            next();
+        });
+}
+
 
 router.get('/', (req, res) => {
     Sausage.findAll()
@@ -14,7 +32,7 @@ router.get('/:id', (req, res) => {
         .catch(err => res.status(500).json(err))
 });
 
-router.post('/', (req, res) => {
+router.post('/', authToken, (req, res) => {
   try {
     const sausage = Sausage.create(req.body);
     res.json(sausage);
@@ -23,7 +41,7 @@ router.post('/', (req, res) => {
   }
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', authToken, (req, res) => {
     Sausage.update(req.body, {
         where: {
             id: req.params.id
@@ -33,7 +51,7 @@ router.put('/:id', (req, res) => {
         .catch(err => res.status(500).json(err))
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authToken, (req, res) => {
     Sausage.destroy({
         where: {
           id: req.params.id
