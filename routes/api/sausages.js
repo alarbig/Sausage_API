@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
+const { Op, NUMBER } = require('sequelize');
 const Sausage  = require('../../model/Sausage')
 
 // authentication middleware setup
@@ -61,4 +62,35 @@ router.delete('/:id', authToken, (req, res) => {
         .catch(err => res.status(500).json(err))
 });
 
-module.exports = router;
+router.get('/find/:sausage_name', (req, res) => {
+  console.log("Request to /find with params:", req.params); // Log the parameters to see what's received
+
+  const sausageName = req.params.sausage_name;
+
+  // Check if sausageName is not provided or is an empty string
+  if (!sausageName || sausageName == null || sausageName.trim() === '') {
+    console.log("No sausage name provided in the request."); // Log for debugging
+    return res.status(400).json({ error: 'Sausage name is required.' });
+  }
+
+  Sausage.findAll({
+    where: {
+      sausage_name: {
+        [Op.like]: '%' + sausageName + '%'
+      }
+    }
+  })
+  .then(sausages => {
+    if (sausages && sausages.length > 0) {
+      res.json(sausages); // Send the found sausages
+    } else {
+      res.status(404).json({ message: 'No sausages found!' });
+    }
+  })
+  .catch(err => {
+    console.error(err); // Log the error for debugging
+    res.status(500).json({ error: 'Internal server error' });
+  });
+});
+
+  module.exports = router;
