@@ -49,17 +49,6 @@ app.get('/login', async (req, res) => {
   }
 });
 
-// app.post('/login', (req, res) =>{
-//   const username = req.body.email
-//   if (!username){
-//     return res.status(400).json({ error: 'Please supply an email.'})
-//   }
-//   const user = { user: username}
-
-//   const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
-//   res.json({ accessToken: accessToken })
-// })
-
 
 // turn on connection to db and server
 sequelize.sync({ force: false }).then(() => {

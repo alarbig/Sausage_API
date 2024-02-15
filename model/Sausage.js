@@ -30,7 +30,11 @@ Sausage.init(
           sausage_country_of_origin: {
             type: DataTypes.STRING,
             allowNull: false,
-          }
+          }, 
+          sausage_recipe: {
+            type: DataTypes.STRING,
+            allowNull: true,
+          },
           
     },
     {
